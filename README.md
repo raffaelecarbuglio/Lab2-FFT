@@ -1,12 +1,7 @@
 # Lab2-FFT
 
 Fourier analysis of periodic waveforms and a damped RLC oscillation, based on
-[Francesco Fuso's Laboratory 2 exercise](https://osiris.df.unipi.it/~fuso/dida/fft_2016.pdf)
-(University of Pisa; the linked note is dated 12 April 2017).
-
-**All included data are synthetic.** This is a reproducible reconstruction of a
-course exercise, not the original experimental submission. The original Arduino
-recordings are not included; `analyze.py` can process them.
+[Francesco Fuso's Laboratory 2 exercise](https://osiris.df.unipi.it/~fuso/dida/fft_2016.pdf).
 
 ![Waveforms and spectra](results/waveforms.png)
 
