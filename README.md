@@ -1,52 +1,23 @@
 # Lab2-FFT
 
-Fourier analysis of periodic waveforms and a damped RLC oscillation, based on
-[Francesco Fuso's Laboratory 2 exercise](https://osiris.df.unipi.it/~fuso/dida/fft_2016.pdf).
+Solution to [Francesco Fuso's Laboratory 2 FFT exercise](https://osiris.df.unipi.it/~fuso/dida/fft_2016.pdf).
 
-![Waveforms and spectra](results/waveforms.png)
-
-## Run
-
-Python 3.10 or newer:
+`analyze.py` generates a sine, square, and triangular wave, plus two damped
+oscillations. It saves the generated signals in `data/` and plots their FFT spectra.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python demo.py
-python build_report.py
-python -m unittest discover -s tests -v
+python analyze.py
 ```
 
-## Analyse a recording
+With 2048 samples separated by 100 microseconds, the frequency spacing is
+4.8828125 Hz and the Nyquist frequency is 5000 Hz. The mean is subtracted to
+remove the zero-frequency component; the plotted FFT modulus is unnormalized.
 
-Input: two columns, time and signal. Time defaults to microseconds; signal stays
-in its input units (Arduino digits or volts). Whitespace files may contain `#`
-comments. For a CSV with one header row:
+- **Sine:** one peak at 78.125 Hz.
+- **Square:** odd harmonics, with amplitudes approximately proportional to 1/h.
+- **Triangle:** odd harmonics, decreasing faster, approximately as 1/h².
+- **Damped oscillation:** a peak near 781.25 Hz; stronger damping makes it lower
+  and broader because the oscillations die out sooner.
 
-```bash
-python analyze.py data/square.csv --delimiter , --skiprows 1
-python analyze.py your_recording.txt --time-unit us --window hann
-```
-
-Outputs: `results/recording/spectrum.png`, `spectrum.csv`, and `summary.txt`.
-Use `--keep-mean` to retain the DC component and `--output PATH` to change the
-destination. If timestamps deviate by more than 1% from the mean interval, the
-script requires `--allow-jitter`; this accepts a uniform-sampling approximation,
-not a correction. The threshold is a practical flag, not an accuracy guarantee.
-
-## Material
-
-- [Solution and physical interpretation](solution.md)
-- [Short PDF report](report.pdf)
-- `analyze.py`: reusable FFT analysis with correct one-sided amplitude scaling.
-- `demo.py`: deterministic data generation and comparison with theory.
-- `build_report.py`: regenerates the report from the results.
-- `data/`: synthetic time records, with microsecond timestamps.
-- `results/`: figures, harmonic ratios, and damped spectra.
-- `tests/`: numerical and input-validation checks.
-
-The main results are the odd-harmonic decay laws, **1/h** for a square wave and
-**1/h²** for a triangular wave, and the lower, broader spectrum of a more strongly
-damped impulse response. [Damping comparison](results/damping.png) and
-[finite-record leakage](results/leakage.png) illustrate the remaining cases.
+![Signals and FFT spectra](spectra.png)
